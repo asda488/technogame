@@ -1,3 +1,8 @@
+window.addEventListener("load", function() {
+  	const canvas = document.getElementById('canvas');
+	const ctx = canvas.getContext('2d');
+});
+
 var walking = false; 
 var situation = "walking" //starts walking
 
@@ -56,8 +61,6 @@ function main() {
 }
 
 function loadAssets() {
-	const canvas = document.getElementById('canvas');
-	const ctx = canvas.getContext('2d');
 	technospritesone = new Image();
   	technospritesone.src = ('img/technosprites2.png'); //Load his sprites
 	main()
