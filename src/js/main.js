@@ -1,13 +1,9 @@
-window.addEventListener("load", function() {
-  	const canvas = document.getElementById('canvas');
-	const ctx = canvas.getContext('2d');
-});
-
-var walking = false; 
+var walking = true; 
 var situation = "walking" //starts walking
 
 //indexes
 var lastfunction = ""
+var speedcounter = 0
 var walkindex = 0; //i need to do something with this
 
 //keybooleans
@@ -52,17 +48,20 @@ function keyDownHandler(e) {
 
 
 function main() {
-  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //clear screen
+  ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //clear screen
   if (situation == "walking") {
     drawTechno()
     drawLand()
   } //add else if
+  speedcounter++; //tick the speed counter, very important
   requestAnimationFrame(main)
 }
 
 function loadAssets() {
+  window.canvas = document.getElementById('canvas');
+  window.ctx = canvas.getContext('2d');
 	technospritesone = new Image();
-  	technospritesone.src = ('img/technosprites2.png'); //Load his sprites
+  technospritesone.src = ('technosprites2.png'); //Load his sprites
 	main()
 }
 
@@ -72,19 +71,24 @@ function drawLand(){
 }
 
 function technoWalk(){
-	//fix this to multi direction and location
+  //fix this to multi direction and location
   if (lastfunction == "technoWalkfront") {
-  	ctx.drawImage(technospritesone, technowalkfront[index][0], technowalkfront[index][1], technowalkfront[index][2], technowalkfront[index][3], 0, 0);
+    console.log("hi")
+  	ctx.drawImage(technospritesone, technowalkfront[walkindex][0], technowalkfront[walkindex][1], technowalkfront[walkindex][2], technowalkfront[walkindex][3], 0, 0, technowalkfront[walkindex][2], technowalkfront[walkindex][3]);
   } else {
-  	walkindex = 0
-    ctx.drawImage(technospritesone, technowalkfront[index][0], technowalkfront[index][1], technowalkfront[index][2], technowalkfront[index][3], 0, 0);
+  	walkindex = 0;
+    ctx.drawImage(technospritesone, technowalkfront[walkindex][0], technowalkfront[walkindex][1], technowalkfront[walkindex][2], technowalkfront[walkindex][3], 0, 0, technowalkfront[walkindex][2], technowalkfront[walkindex][3]);
   }
-	walkindex = (walkindex++)%4
+   console.log(walkindex)
+  lastfunction = "technoWalkfront"
+  if (speedcounter%8 === 0){
+    	walkindex = (walkindex+1)%3;
+  }
 }
 
 function drawTechno() {
 	if (walking === true) {
-  	technoWalk()
+  	technoWalk();
   } else {
   	//pass
 	}
