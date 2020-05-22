@@ -61,7 +61,7 @@ function loadAssets() {
   window.canvas = document.getElementById('canvas');
   window.ctx = canvas.getContext('2d');
 	technospritesone = new Image();
-  technospritesone.src = ('technosprites2.png'); //Load his sprites
+  technospritesone.src = ('img/technosprites2.png'); //Load his sprites
 	main()
 }
 
