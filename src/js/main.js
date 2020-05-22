@@ -83,7 +83,7 @@ function technoWalk(){
 }
 
 function drawTechno() {
-	if (walking == true) {
+	if (walking === true) {
   	technoWalk()
   } else {
   	//pass
