@@ -1,17 +1,20 @@
-var walking = true; 
-var situation = "walking" //starts walking
+var situation = "walking"; //starts walking
+
+//coords 
+var coords = [0, 0, 0, 0]; //x, y, dx, dy
 
 //indexes
-var lastfunction = ""
-var speedcounter = 0
-var walkindex = 0; 
+var lastfunction = "";
+var speedcounter = 0;
+var walkindex = 0; //i need to do something with this
+
 //keybooleans
 var rightPressed = false;
 var leftPressed = false;
 var downPressed = false;
 var upPressed = false;
 
-//techno sprite locations fix left and right to center
+//techno sprite locations
 var technowalkfront = [[39, 36, 74, 126], [135, 35, 75, 127], [230, 35, 76, 127]];  //113 162, 210 162, 306 162
 var technowalkback = [[38, 179, 76, 127], [134, 179, 76, 127], [230, 179, 76, 127]]; //114 306, 210 306, 306 306
 var technowalkleft = [[26, 323, 76, 127], [110, 323, 76, 127], [191, 323, 76, 127]]; //93 450, 177 450, 258 450
@@ -51,23 +54,42 @@ function keyDownHandler(e) {
         }
     }
 
+function moveTechno() {
+  if (rightPressed) {
+    coords[2] = 5;
+  } if (leftPressed){
+    coords[2] = -5;
+  } if (downPressed){
+    coords[3] = 5;
+  } if (upPressed) {
+    coords[3] = -5;
+  }
+  //update post
+  coords[0] += coords[2];
+  coords[1] += coords[3];
+}
 
+//the main function
 function main() {
   ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //clear screen
   if (situation == "walking") {
+    moveTechno();
     drawTechno();
     drawLand();
+    coords[2] = coords[3] = 0; //reset dx, dy
   } //add else if
-  speedcounter = (speedcounter+1)%60; //tick the speed counter, very important
+  speedcounter = (speedcounter+1)%60;//tick the speed counter, very important
+  console.log(coords[1]); //debug
   requestAnimationFrame(main);
 }
 
+//loading
 function loadAssets() {
   window.canvas = document.getElementById('canvas');
   window.ctx = canvas.getContext('2d');
 	technospritesone = new Image();
-  technospritesone.src = ('img/technosprites2.png'); //Load his sprites
-	main()
+  technospritesone.src = ('technosprites2.png'); //Load his sprites
+	main();
 }
 
 //landscape functions
@@ -81,7 +103,7 @@ function technoWalk(){
     if (lastfunction != "technoWalkfront") {
   	  walkindex = 0;	
     }
-	ctx.drawImage(technospritesone, technowalkfront[walkindex][0], technowalkfront[walkindex][1], technowalkfront[walkindex][2], technowalkfront[walkindex][3], 0, 0, technowalkfront[walkindex][2], technowalkfront[walkindex][3]);
+	ctx.drawImage(technospritesone, technowalkfront[walkindex][0], technowalkfront[walkindex][1], technowalkfront[walkindex][2], technowalkfront[walkindex][3], coords[0], coords[1], technowalkfront[walkindex][2], technowalkfront[walkindex][3]);
   lastfunction = "technoWalkfront";
   if (speedcounter%12 === 0){
     walkindex = (walkindex+1)%3;
@@ -90,7 +112,7 @@ function technoWalk(){
       if (lastfunction != "technoWalkback") {
   	    walkindex = 0;	
     }
-	ctx.drawImage(technospritesone, technowalkback[walkindex][0], technowalkback[walkindex][1], technowalkback[walkindex][2], technowalkback[walkindex][3], 0, 0, technowalkback[walkindex][2], technowalkback[walkindex][3]);
+	ctx.drawImage(technospritesone, technowalkback[walkindex][0], technowalkback[walkindex][1], technowalkback[walkindex][2], technowalkback[walkindex][3], coords[0], coords[1], technowalkback[walkindex][2], technowalkback[walkindex][3]);
   lastfunction = "technoWalkback";
   if (speedcounter%12 === 0){
     walkindex = (walkindex+1)%3;
@@ -99,7 +121,7 @@ function technoWalk(){
       if (lastfunction != "technoWalkleft") {
   	    walkindex = 0;	
     }
-	ctx.drawImage(technospritesone, technowalkleft[walkindex][0], technowalkleft[walkindex][1], technowalkleft[walkindex][2], technowalkleft[walkindex][3], 0, 0, technowalkleft[walkindex][2], technowalkleft[walkindex][3]);
+	ctx.drawImage(technospritesone, technowalkleft[walkindex][0], technowalkleft[walkindex][1], technowalkleft[walkindex][2], technowalkleft[walkindex][3], coords[0], coords[1], technowalkleft[walkindex][2], technowalkleft[walkindex][3]);
   lastfunction = "technoWalkleft";
   if (speedcounter%12 === 0){
     walkindex = (walkindex+1)%3;
@@ -108,7 +130,7 @@ function technoWalk(){
       if (lastfunction != "technoWalkright") {
     	  walkindex = 0;	
     }
-	ctx.drawImage(technospritesone, technowalkright[walkindex][0], technowalkright[walkindex][1], technowalkright[walkindex][2], technowalkright[walkindex][3], 0, 0, technowalkright[walkindex][2], technowalkright[walkindex][3]);
+	ctx.drawImage(technospritesone, technowalkright[walkindex][0], technowalkright[walkindex][1], technowalkright[walkindex][2], technowalkright[walkindex][3], coords[0], coords[1], technowalkright[walkindex][2], technowalkright[walkindex][3]);
   lastfunction = "technoWalkright";
   if (speedcounter%12 === 0){
     walkindex = (walkindex+1)%3;
@@ -118,17 +140,16 @@ function technoWalk(){
       walkindex = 0;
     }
     if (lastfunction == "technoWalkback" || lastfunction == "technoIdleback") { //were you facing back or front?
-      ctx.drawImage(technospritesone, technoidleback[walkindex][0], technoidleback[walkindex][1], technoidleback[walkindex][2], technoidleback[walkindex][3], 0, 0, technoidleback[walkindex][2], technoidleback[walkindex][3]);
+      ctx.drawImage(technospritesone, technoidleback[walkindex][0], technoidleback[walkindex][1], technoidleback[walkindex][2], technoidleback[walkindex][3], coords[0], coords[1], technoidleback[walkindex][2], technoidleback[walkindex][3]);
       lastfunction = "technoIdleback";
       if (speedcounter%12 === 0){
         console.log(walkindex);
         walkindex = (walkindex+1)%2;
       }
     } else {
-      ctx.drawImage(technospritesone, technoidlefront[walkindex][0], technoidlefront[walkindex][1], technoidlefront[walkindex][2], technoidlefront[walkindex][3], 0, 0, technoidlefront[walkindex][2], technoidlefront[walkindex][3]);
+      ctx.drawImage(technospritesone, technoidlefront[walkindex][0], technoidlefront[walkindex][1], technoidlefront[walkindex][2], technoidlefront[walkindex][3], coords[0], coords[1], technoidlefront[walkindex][2], technoidlefront[walkindex][3]);
       lastfunction = "technoIdlefront";
       if (speedcounter%12 === 0){
-        console.log(walkindex);
         walkindex = (walkindex+1)%6;
       }
     }
@@ -136,7 +157,7 @@ function technoWalk(){
 }
 
 function drawTechno() {
-	if (walking === true) {
+	if (situation == "walking") {
   	technoWalk();
   } else {
   	//pass
