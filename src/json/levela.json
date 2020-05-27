@@ -1,0 +1,16 @@
+{
+  "landscape" : "pass",
+  "terrain" : [
+    {
+      "name" : "tree, this is here for only comment purposes",
+      "src" : "technoresources",
+      "px" : 482,
+      "py" : 47,
+      "dx" : 190,
+      "dy" : 256,
+      "x" : 100,
+      "y" : 100
+    }
+    ]
+  
+}
