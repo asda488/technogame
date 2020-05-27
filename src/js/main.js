@@ -3,6 +3,9 @@ var situation = "walking"; //starts walking
 //coords 
 var coords = [0, 0, 0, 0]; //x, y, dx, dy
 
+//json
+var levelname = "json/levela.json";
+
 //indexes
 var lastfunction = "";
 var speedcounter = 0;
@@ -95,10 +98,6 @@ function loadAssets() {
   window.ctx = canvas.getContext('2d');
 	technospritesone = new Image();
   technospritesone.src = ('img/technosprites2.png'); //Load his sprites
-  schlattsprites = new Image();
-  schlattsprites.src = ('img/schlattsprites.png');
-  //landelementsone = new Image();
-  //landelementsone.src = ('img/technoresources1.png'); //load the scenery
   main(); //call main function
 }
 
@@ -107,8 +106,15 @@ function drawLand(){
 	//pass
 }
 
-function drawTerrain(){
-  //pass
+function drawTerrain(){ //has to be written this way due to asynchronity
+  $.getJSON(levelname, function(data){
+    var counter;
+    for (counter = 0; counter < data.terrain.length; counter++){
+      var renderingimage = new Image();
+      renderingimage.src = data.terrain;
+      ctx.drawImage(renderingimage, data.terrain[counter].px, data.terrain[counter].py, data.terrain[counter].dx, data.terrain[counter].dy, data.terrain[counter].x, data.terrain[counter].y, data.terrain[counter].dx, data.terrain[counter].dy); //finish this
+    }
+  });
 }
 
 //techno walk functions
