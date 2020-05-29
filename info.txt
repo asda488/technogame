@@ -27,8 +27,8 @@ var stonestwo = [398, 494, 61, 37]; //459 531
 
 //the textboxes 
 var technochatcrownlarge = [44, 167, 487, 364]; //531 531 on the file
-var technochatcrownmedium = 
-var schlattchat = 
+var technochatcrownmedium = [39, 10, 431, 290] //470 300
+var schlattchat = [39, 339, 431, 322] //470 661
 
 //schlatt's sprites
 var schlattidle = [[83, 219, 101, 165], [211, 219, 101, 165], [339, 219, 101, 165], [467, 219, 101, 165], [595, 219, 101, 165]]; //184 384,312 384, 440 384, 568 384,696 384
