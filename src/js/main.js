@@ -204,20 +204,25 @@ function drawTechno() {
 function detectCollisions() { //detects collisions
   if (coords[0] > 500){ //firstly, off page?
     coords[0] = 500;
-    coords[2] = 0;
   }
   if (coords[0] < 0) {
     coords[0] = 0;
-    coords[2] = 0;
   }
   if (coords[1] > 449) {
     coords[1] = 449;
-    coords[3] = 0;
   }
   if (coords[1] < 0) {
     coords[1] = 0;
-    coords[3] = 0;
   }
+  var index;
+  for (index = 0; index < currentlevel.terrain.length; index++){ //secondly, collision?
+    var terraincoords = currentlevel.terrain[index].type;
+    if ((coords[0]+76 > currentlevel.terrain[index].x+terraincoords[5] && coords[0] < currentlevel.terrain[index].x+terraincoords[7]) && (coords[1]+127 > currentlevel.terrain[index].y+terraincoords[6] && coords[1] < currentlevel.terrain[index].y+terraincoords[8])){ //secondly, bashing into something?
+      coords[0] -= coords[2];
+      coords[1] -= coords[3];      
+    }
+  }
+}
 }
 
 window.addEventListener("load", loadAssets); //main function caller
