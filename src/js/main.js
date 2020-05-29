@@ -3,6 +3,9 @@ var situation = "walking"; //starts walking
 //coords 
 var coords = [0, 0, 0, 0]; //x, y, dx, dy
 
+//levelinfo
+var currentlevel = levela;
+
 //indexes
 var lastfunction = "";
 var speedcounter = 0;
@@ -83,6 +86,7 @@ function main() {
     detectCollisions(); //detect collisions
     drawTechno(); //draw techno
     drawTerrain(); //draw in front
+    handleSpecial(); //handle special
     coords[2] = coords[3] = 0; //reset dx, dy
   } //add else if
   speedcounter = (speedcounter+1)%60;//tick the speed counter, very important
@@ -95,8 +99,14 @@ function loadAssets() {
   window.ctx = canvas.getContext('2d');
 	technospritesone = new Image();
   technospritesone.src = ('img/technosprites2.png'); //Load his sprites
-  schlattsprites = new Image();
-  schlattsprites.src = ('img/schlattsprites.png');
+  var index;
+  var picturekeys = Object.keys(mainlevelpictures);//update for all scripts, loads all other pictures
+  for (index = 0; index<picturekeys.length; index++) {
+    window[picturekeys[index]] = new Image();
+    window[picturekeys[index]].src = ("levels/img/" + mainlevelpictures[picturekeys[index]]); //delete levels/img/ as necessary
+  }
+  //schlattsprites = new Image();
+  //schlattsprites.src = ('img/schlattsprites.png');
   //landelementsone = new Image();
   //landelementsone.src = ('img/technoresources1.png'); //load the scenery
   main(); //call main function
@@ -107,8 +117,16 @@ function drawLand(){
 	//pass
 }
 
-function drawTerrain(){
-  //pass
+function handleSpecial(){
+ //pass 
+}
+
+function drawTerrain(){ //draws in front of techno - things that can block him.
+  var index;
+  for (index = 0; index<currentlevel.terrain.length; index++){
+    var terrainprocess = currentlevel.terrain[index];
+    ctx.drawImage(window[terrainprocess.type[0]], terrainprocess.type[1], terrainprocess.type[2], terrainprocess.type[3], terrainprocess.type[4], terrainprocess.x, terrainprocess.y, terrainprocess.type[3], terrainprocess.type[4]);
+  }
 }
 
 //techno walk functions
@@ -172,7 +190,7 @@ function drawTechno() {
 }
 
 function detectCollisions() { //detects collisions
-  if (coords[0] > 500){
+  if (coords[0] > 500){ //firstly, off page?
     coords[0] = 500;
     coords[2] = 0;
   }
