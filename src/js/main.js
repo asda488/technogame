@@ -116,7 +116,7 @@ function loadAssets() {
   var picturekeys = Object.keys(mainlevelpictures);//update for all scripts, loads all other pictures
   for (index = 0; index<picturekeys.length; index++) {
     window[picturekeys[index]] = new Image();
-    window[picturekeys[index]].src = ("levels/img" + mainlevelpictures[picturekeys[index]]);
+    window[picturekeys[index]].src = ("levels/img/" + mainlevelpictures[picturekeys[index]]);
   }
   main(); //call main function
 }
