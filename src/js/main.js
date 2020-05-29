@@ -34,6 +34,7 @@ var technoidleback = [[368, 458, 76, 133], [464, 458, 76, 133]]; //444 591, 540 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 document.addEventListener("contextmenu", clearKeys, false);
+document.addEventListener("visibilityChange", clearKeys, false);
 
 function clearKeys(){
   rightPressed = false;
