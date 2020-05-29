@@ -223,6 +223,5 @@ function detectCollisions() { //detects collisions
     }
   }
 }
-}
 
 window.addEventListener("load", loadAssets); //main function caller
