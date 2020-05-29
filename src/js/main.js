@@ -1,10 +1,14 @@
 var situation = "walking"; //starts walking
 
 //coords 
-var coords = [0, 0, 0, 0]; //x, y, dx, dy
+var coords = [0,0,0,0]; //x, y, dx, dy
 
 //levelinfo
 var currentlevel = levela;
+
+//terraininfo 
+var terrain = [];
+var landscape = [];
 
 //indexes
 var lastfunction = "";
@@ -24,11 +28,6 @@ var technowalkleft = [[26, 323, 76, 127], [110, 323, 76, 127], [191, 323, 76, 12
 var technowalkright = [[35, 467, 76, 127], [116, 467, 76, 127], [200, 467, 76, 127]]; //102 594, 183 594, 267 594
 var technoidlefront = [[368, 26, 76, 133], [464, 26, 76, 133], [368, 170, 76, 133], [464, 170, 76, 133],[368, 314, 76, 133],[464, 314, 76, 133]]; //444 159, 540 159, 444 303, 540 303, 444 447, 540 447
 var technoidleback = [[368, 458, 76, 133], [464, 458, 76, 133]]; //444 591, 540 591
-
-//subfunctions 
-//function drawpicture(image, array, x, y) { //pass an image, an array format x, y, x2, y2 and then two numbers x postion and y postition
-//  ctx.drawImage(image, array[0], array[1], array[2]-array[0], array[3]-array[1], x, y, array[2]-array[0], array[3]-array[1])
-//}
 
 //keyhandlers and listeners
 document.addEventListener("keydown", keyDownHandler, false);
@@ -66,10 +65,10 @@ function keyUpHandler(e) {
         leftPressed = false;
     }
     else if(e.keyCode == 38 || e.keyCode == 87) {
-	upPressed = false;
+    		upPressed = false;
     }
     else if(e.keyCode == 40 || e.keyCode == 83) {
-	downPressed = false;
+    		downPressed = false;
     }
 }
 
@@ -93,12 +92,15 @@ function main() {
   ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //clear screen
   if (situation == "walking") { //to walk, do...
     moveTechno(); //detect keys
-    drawLand(); //draw behind land
+    organiseItems(); //are the objects infront or behind Techno?
     detectCollisions(); //detect collisions
-    drawTechno(); //draw techno
-    drawTerrain(); //draw in front
+    drawLand(); //draw behind land
+    drawTechno(); //draw techno 
+    drawTerrain(); //draw anything in front
     handleSpecial(); //handle special
     coords[2] = coords[3] = 0; //reset dx, dy
+    terrain = []
+    landscape = []; //reset landscape, terrain
   } //add else if
   speedcounter = (speedcounter+1)%60;//tick the speed counter, very important
   requestAnimationFrame(main); //loop
@@ -114,30 +116,46 @@ function loadAssets() {
   var picturekeys = Object.keys(mainlevelpictures);//update for all scripts, loads all other pictures
   for (index = 0; index<picturekeys.length; index++) {
     window[picturekeys[index]] = new Image();
-    window[picturekeys[index]].src = ("levels/img/" + mainlevelpictures[picturekeys[index]]); //delete levels/img/ as necessary;
+    window[picturekeys[index]].src = ("levels/img" + mainlevelpictures[picturekeys[index]]);
   }
-  //schlattsprites = new Image();
-  //schlattsprites.src = ('img/schlattsprites.png');
-  //landelementsone = new Image();
-  //landelementsone.src = ('img/technoresources1.png'); //load the scenery
   main(); //call main function
 }
 
 //landscape functions
 function drawLand(){
-	//pass
+  var index;
+	for (index = 0; index<landscape.length; index++){
+    var landscapeprocess = landscape[index];
+    ctx.drawImage(window[landscapeprocess.type[0]], landscapeprocess.type[1], landscapeprocess.type[2], landscapeprocess.type[3], landscapeprocess.type[4], landscapeprocess.x, landscapeprocess.y, landscapeprocess.type[3], landscapeprocess.type[4]);
+  }
 }
 
 function handleSpecial(){
- //pass 
+ //pass - we want a sort of if else chain here
 }
 
 function drawTerrain(){ //draws in front of techno - things that can block him.
   var index;
-  for (index = 0; index<currentlevel.terrain.length; index++){
+  /*for (index = 0; index<currentlevel.terrain.length; index++){
     var terrainprocess = currentlevel.terrain[index];
     //console.log(window[terrainprocess.type[0]]);
     ctx.drawImage(window[terrainprocess.type[0]], terrainprocess.type[1], terrainprocess.type[2], terrainprocess.type[3], terrainprocess.type[4], terrainprocess.x, terrainprocess.y, terrainprocess.type[3], terrainprocess.type[4]);
+  }*/ //old code
+  for (index = 0; index<terrain.length; index++){
+    var terrainprocess = terrain[index];
+    ctx.drawImage(window[terrainprocess.type[0]], terrainprocess.type[1], terrainprocess.type[2], terrainprocess.type[3], terrainprocess.type[4], terrainprocess.x, terrainprocess.y, terrainprocess.type[3], terrainprocess.type[4]);
+  }
+}
+
+function organiseItems(){
+  var index;
+  for (index = 0; index < currentlevel.terrain.length; index++){ //detects 
+    var terraininfo = currentlevel.terrain[index];
+    if (coords[1]+127 > (terraininfo.type[8]+terraininfo.x)) {
+      landscape.push(currentlevel.terrain[index]);
+    } else {
+      terrain.push(currentlevel.terrain[index]);      
+    }
   }
 }
 
@@ -215,12 +233,12 @@ function detectCollisions() { //detects collisions
     coords[1] = 0;
   }
   var index;
-  for (index = 0; index < currentlevel.terrain.length; index++){ //secondly, collision?
+  for (index = 0; index < currentlevel.terrain.length; index++){ //detects 
     var terraincoords = currentlevel.terrain[index].type;
-    if ((coords[0]+76 > currentlevel.terrain[index].x+terraincoords[5] && coords[0] < currentlevel.terrain[index].x+terraincoords[7]) && (coords[1]+127 > currentlevel.terrain[index].y+terraincoords[6] && coords[1] < currentlevel.terrain[index].y+terraincoords[8])){ //secondly, bashing into something?
+    if ((coords[0]+76 > currentlevel.terrain[index].x+terraincoords[5] && coords[0] < currentlevel.terrain[index].x+terraincoords[7]) && (coords[1]+127 > currentlevel.terrain[index].y+terraincoords[6] && coords[1]+127 < currentlevel.terrain[index].y+terraincoords[8])){ //secondly, bashing into something?
       coords[0] -= coords[2];
-      coords[1] -= coords[3];      
-    }
+      coords[1] -= coords[3]; 
+    } 
   }
 }
 
