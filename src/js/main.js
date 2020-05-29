@@ -33,34 +33,44 @@ var technoidleback = [[368, 458, 76, 133], [464, 458, 76, 133]]; //444 591, 540 
 //keyhandlers and listeners
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
+document.addEventListener("contextmenu", clearKeys, false);
+
+function clearKeys(){
+  rightPressed = false;
+  leftPressed = false;
+  downPressed = false;
+  upPressed = false;
+}
+
 function keyDownHandler(e) {
-        if(e.keyCode == 39 || e.keycode == 68) {
-            rightPressed = true;
-        }
-        else if(e.keyCode == 37 || e.keycode == 65) {
-            leftPressed = true;
-        }
-        else if(e.keyCode == 38 || e.keycode == 87) {
-        		upPressed = true;
-        }
-        else if(e.keyCode == 40 || e.keycode == 83) {
-        		downPressed = true;
-        }
+    if(e.keyCode == 39 || e.keyCode == 68) {
+        rightPressed = true;
     }
-    function keyUpHandler(e) {
-        if(e.keyCode == 39 || e.keycode == 68) {
-            rightPressed = false;
-        }
-        else if(e.keyCode == 37 || e.keycode == 65) {
-            leftPressed = false;
-        }
-        else if(e.keyCode == 38 || e.keycode == 87) {
-        		upPressed = false;
-        }
-        else if(e.keyCode == 40 || e.keycode == 83) {
-        		downPressed = false;
-        }
+    else if(e.keyCode == 37 || e.keyCode == 65) {
+        leftPressed = true;
     }
+    else if(e.keyCode == 38 || e.keyCode == 87) {
+    		upPressed = true;
+    }
+    else if(e.keyCode == 40 || e.keyCode == 83) {
+    		downPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if(e.keyCode == 39 || e.keyCode == 68) {
+        rightPressed = false;
+    }
+    else if(e.keyCode == 37 || e.keyCode == 65) {
+        leftPressed = false;
+    }
+    else if(e.keyCode == 38 || e.keyCode == 87) {
+	upPressed = false;
+    }
+    else if(e.keyCode == 40 || e.keyCode == 83) {
+	downPressed = false;
+    }
+}
 
 function moveTechno() {
   if (rightPressed) {
@@ -103,7 +113,7 @@ function loadAssets() {
   var picturekeys = Object.keys(mainlevelpictures);//update for all scripts, loads all other pictures
   for (index = 0; index<picturekeys.length; index++) {
     window[picturekeys[index]] = new Image();
-    window[picturekeys[index]].src = ("levels/img/" + mainlevelpictures[picturekeys[index]]); //delete levels/img/ as necessary
+    window[picturekeys[index]].src = mainlevelpictures[picturekeys[index]];
   }
   //schlattsprites = new Image();
   //schlattsprites.src = ('img/schlattsprites.png');
@@ -125,6 +135,7 @@ function drawTerrain(){ //draws in front of techno - things that can block him.
   var index;
   for (index = 0; index<currentlevel.terrain.length; index++){
     var terrainprocess = currentlevel.terrain[index];
+    //console.log(window[terrainprocess.type[0]]);
     ctx.drawImage(window[terrainprocess.type[0]], terrainprocess.type[1], terrainprocess.type[2], terrainprocess.type[3], terrainprocess.type[4], terrainprocess.x, terrainprocess.y, terrainprocess.type[3], terrainprocess.type[4]);
   }
 }
