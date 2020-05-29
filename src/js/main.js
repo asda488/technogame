@@ -159,7 +159,6 @@ function drawTechno() {
       ctx.drawImage(technospritesone, technoidleback[walkindex][0], technoidleback[walkindex][1], technoidleback[walkindex][2], technoidleback[walkindex][3], coords[0], coords[1], technoidleback[walkindex][2], technoidleback[walkindex][3]);
       lastfunction = "technoIdleback";
       if (speedcounter%12 === 0){
-        console.log(walkindex);
         walkindex = (walkindex+1)%2;
       }
     } else {
