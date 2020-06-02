@@ -14,3 +14,13 @@ a {
   text-align: center;
   display:block;
 }
+
+@font-face {
+    font-family: 'minecraftiaregular';
+    src: url('fonts/minecraftia.woff2') format('woff2'),
+         url('fonts/minecraftia.woff') format('woff'),
+         url('fonts/minecraftia.ttf');
+    font-weight: normal;
+    font-style: normal;
+
+}
